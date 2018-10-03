@@ -35,4 +35,6 @@ node_modules
 .node_repl_history
 
 .idea/
+
+.vscode/
 dist/
