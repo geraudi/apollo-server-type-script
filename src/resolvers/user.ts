@@ -1,14 +1,16 @@
-import { AuthenticationError } from 'apollo-server'
-
 const userResolver = {
   Query: {
-    users(root: any, args: any, context: any) {
-      console.log(context)
-      // if (!context.authorized) {
-      //   console.error('User not authorized')
-      //   throw new AuthenticationError('you must be logged in')
-      // }
-      return [{ name: 'geraud' }]
+    users: async (root: any, args: any, context: any) => {
+      const { neo4j } = context
+      const allUsers = async () => {
+        const session = neo4j.session
+        const query: string = 'MATCH (user:User) RETURN user LIMIT 25;'
+        const result = await session.run(query)
+        return result.records.map((record: any) => {
+          return record.get('user').properties
+        })
+      }
+      return allUsers().then(result => result)
     },
     validateUser(root: any, args: any) {
       return {}

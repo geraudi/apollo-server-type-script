@@ -14,13 +14,15 @@
       "check-type"
     ],
     "no-internal-module": true,
-    "no-null-keyword": true,
+    "no-null-keyword": false,
     "prefer-const": true,
     "jsdoc-format": true,
+    "interface-name": false,
     "no-console": [
       false,
       "log"
     ],
+    "no-var-requires": false,
     "no-any": false
   },
   "extends": [
