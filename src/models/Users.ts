@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 import { INeo4JConnector } from '../connectors/neo4j'
 import * as Neo4J from 'neo4j-driver'
 
@@ -23,5 +25,27 @@ export default class Users {
     return result.records.map((record: any) => {
       return record.get('user').properties
     })
+  }
+
+  public add = async (email: string, password: string, firstName: string) => {
+    const hash = await bcrypt.hash(password, 10)
+
+    const params = {
+      email,
+      password: hash,
+      firstName,
+    }
+
+    const query = `
+      CREATE (user:User { 
+        email: $email, 
+        password: $password, 
+        firstName: $firstName
+      })
+      RETURN user;
+    `
+
+    const result = await this.db.run(query, params)
+    return result.records[0] ? result.records[0].get('user').properties : {}
   }
 }

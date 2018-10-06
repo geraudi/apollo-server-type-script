@@ -6,8 +6,14 @@ const userResolver = {
       } = context
       return users.getAll()
     },
-    validateUser(root: any, args: any) {
-      return {}
+  },
+
+  Mutation: {
+    addUser: async (root: any, args: any, context: any) => {
+      const {
+        models: { users },
+      } = context
+      return users.add(args.email, args.password, args.firstName)
     },
   },
 }
