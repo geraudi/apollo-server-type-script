@@ -1,0 +1,15 @@
+version: '3'
+
+services: 
+    neo4j: 
+        image: neo4j
+        ports: 
+            - "7474:7474" 
+            - "7687:7687"
+        volumes: 
+            - './docker/neo4j/data:/data' 
+            - './docker/neo4j/logs:/logs' 
+            - './docker/neo4j/plugins:/plugins'
+        environment: 
+            - 'NEO4J_dbms_security_procedures_unrestricted=apoc.*'
+        container_name: neo4j-gql
