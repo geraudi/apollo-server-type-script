@@ -1,34 +1,19 @@
-import Neo4JConnector from './connectors/neo4j'
-import * as dotenv from 'dotenv'
+import getNeo4jSession from './connectors/neo4j'
 import { IServerParams } from './server'
-import * as models from './models'
+import Users from './models/Users'
+import * as Neo4J from 'neo4j-driver'
 
 export interface IAppContext {
-  neo4j: any
   token: string
   models: []
 }
 
-dotenv.config()
-const uri: string = process.env.NEO4J_URI || ''
-const user: string = process.env.NEO4J_USER || ''
-const password: string = process.env.NEO4J_PASSWORD || ''
-
-/**
- * NEO4J connector
- */
-const neo4j = new Neo4JConnector({
-  uri,
-  user,
-  password,
-})
-
-const users = new models.Users(neo4j)
-
 const context = (params: IServerParams) => {
+  const neo4jSession: Neo4J.v1.Session = getNeo4jSession()
+  const users = new Users(neo4jSession)
+
   return {
-    neo4j,
-    token: 'azerty',
+    token: '',
     models: { users },
   }
 }

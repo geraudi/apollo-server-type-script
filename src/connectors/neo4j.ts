@@ -1,35 +1,29 @@
 import * as Neo4J from 'neo4j-driver'
+import * as dotenv from 'dotenv'
 
-export interface INeo4JConnector {
-  session: Neo4J.v1.Session
+dotenv.config()
+const uri: string = process.env.NEO4J_URI || ''
+const user: string = process.env.NEO4J_USER || ''
+const password: string = process.env.NEO4J_PASSWORD || ''
+
+if (uri === '') {
+  throw new Error('Neo4j uri is required')
+}
+if (user === '') {
+  throw new Error('Neo4j user is required')
+}
+if (password === '') {
+  throw new Error('Neo4j password is required')
 }
 
-export interface INeo4jOptions {
-  uri: string
-  user: string
-  password: string
-}
+let session: Neo4J.v1.Session
 
-export default class Neo4JConnector implements INeo4JConnector {
-  public session: Neo4J.v1.Session
-  private driver: Neo4J.v1.Driver
-
-  constructor({ uri, user, password }: INeo4jOptions) {
-    this.driver = Neo4J.v1.driver(uri, Neo4J.v1.auth.basic(user, password))
-    this.session = this.driver.session()
+const getNeo4JSession = (): Neo4J.v1.Session => {
+  if (!session) {
+    const driver = Neo4J.v1.driver(uri, Neo4J.v1.auth.basic(user, password))
+    session = driver.session()
   }
+  return session
 }
 
-/*
-Usage :
-async function allUsers() {
-  const session = neo4j.session
-  const query: string = 'MATCH (user:User) RETURN user LIMIT 25;'
-  const result = await session.run(query)
-  return result.records.map(record => {
-    return record.get('user').properties
-  })
-}
-
-allUsers().then(result => console.log(result))
-*/
+export default getNeo4JSession

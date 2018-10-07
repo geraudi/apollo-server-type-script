@@ -1,6 +1,4 @@
 import bcrypt from 'bcrypt'
-
-import { INeo4JConnector } from '../connectors/neo4j'
 import * as Neo4J from 'neo4j-driver'
 
 export interface IUser {
@@ -13,8 +11,8 @@ export interface IUser {
 export default class Users {
   public db: Neo4J.v1.Session
 
-  constructor(connector: INeo4JConnector) {
-    this.db = connector.session
+  constructor(session: Neo4J.v1.Session) {
+    this.db = session
   }
 
   public getById = (id: number) => undefined
