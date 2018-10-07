@@ -39,6 +39,10 @@ node_modules
 .vscode/
 dist/
 
-!**/.gitkeep
 docker/*
+!docker/neo4j/.gitkeep
+!docker/neo4j/data/.gitkeep
+!docker/neo4j/import/.gitkeep
+!docker/neo4j/logs/.gitkep
+!docker/neo4j/plugins/.gitkep
 .env
