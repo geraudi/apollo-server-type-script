@@ -16,13 +16,17 @@ docker-compose stop
 
 ### Neo4j
 Open http://localhost:7474/browser/
+
 Loggin with neo4j/neo4j 
+
 Change password: neo4j / Geraudi;01
 
 #### Import data
 Copy csv file in docker/neo4j/import/
+
 Open http://localhost:7474/browser/
-Cypher :
+
+Copy Cypher query :
 
 ```
 LOAD CSV WITH HEADERS FROM "file:///users.csv" AS row
